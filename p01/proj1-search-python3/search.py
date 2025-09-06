@@ -100,14 +100,13 @@ def depthFirstSearch(problem):
     fringe.push(SearchNode(problem.getStartState(), None, None))
 
     while not fringe.isEmpty():
-        print(str(fringe.list[-1].state))
         currentNode = fringe.pop()
+        print(currentNode)
         if problem.isGoalState(currentNode.state):
             path = []
             while currentNode.dir != None:
                 path = [currentNode.dir] + path
                 currentNode = currentNode.prev
-            print("path: " + str(path))
             return path
         if currentNode.state not in closed:
             closed.add(currentNode.state)
@@ -124,14 +123,12 @@ def breadthFirstSearch(problem):
     fringe.push(SearchNode(problem.getStartState(), None, None))
 
     while not fringe.isEmpty():
-        print(str(fringe.list[-1].state))
         currentNode = fringe.pop()
         if problem.isGoalState(currentNode.state):
             path = []
             while currentNode.dir != None:
                 path = [currentNode.dir] + path
                 currentNode = currentNode.prev
-            print("path: " + str(path))
             return path
         if currentNode.state not in closed:
             closed.add(currentNode.state)
