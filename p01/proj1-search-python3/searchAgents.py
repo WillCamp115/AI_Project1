@@ -40,6 +40,7 @@ from game import Actions
 import util
 import time
 import search
+import math
 
 class GoWestAgent(Agent):
     "An agent that goes West until it can't."
@@ -382,8 +383,39 @@ def cornersHeuristic(state, problem):
     corners = problem.corners # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
+    minDistance = math.inf
+    
+    currentPos = state[0]
+
+    cornersLeft=[]
+    for i in range(4):
+        if not state[i+1]:
+            cornersLeft += [corners[i]]
+
+    if len(cornersLeft)==0:
+        return 0
+
+    totalDistance=0
+    goingTo=0
+    
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    while len(cornersLeft) > 0:
+        minDistance = math.inf
+        for corner in cornersLeft:
+            dist = math.sqrt((currentPos[0] - corner[0])**2 + (currentPos[1] - corner[1])**2)
+            if dist < minDistance:
+                minDistance = dist
+                goingTo = corner
+
+        totalDistance+=minDistance
+
+        cornersLeft.remove(goingTo)
+        currentPos = goingTo
+        
+
+        
+    
+    return totalDistance
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
@@ -476,8 +508,18 @@ def foodHeuristic(state, problem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
-    "*** YOUR CODE HERE ***"
-    return 0
+    
+    h = math.inf
+
+    if len(foodGrid.asList()) == 0:
+        return 0
+
+    for food in foodGrid.asList():
+        dist += math.sqrt((position[0]-food[0])**2 + (position[1]-food[1])**2)
+
+
+
+    return h
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"

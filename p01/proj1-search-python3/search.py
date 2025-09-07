@@ -177,7 +177,6 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                 currentNode = currentNode.prev
             return path
         if currentNode.state not in closed:
-            print(str(currentNode.state) + " " + str(currentNode.cost))
             closed.add(currentNode.state)
             for child in problem.getSuccessors(currentNode.state):
                 if child[0] not in closed:
