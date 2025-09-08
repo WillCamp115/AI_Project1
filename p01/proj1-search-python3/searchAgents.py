@@ -411,9 +411,6 @@ def cornersHeuristic(state, problem):
 
         cornersLeft.remove(goingTo)
         currentPos = goingTo
-        
-
-        
     
     return totalDistance
 
@@ -508,18 +505,35 @@ def foodHeuristic(state, problem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
-    
-    h = math.inf
+    minDistance = math.inf
 
-    if len(foodGrid.asList()) == 0:
+    foodLeft = foodGrid.asList()
+
+    if len(foodLeft)==0:
         return 0
+    closestDist = math.inf
+    for food in foodLeft:
+        if math.sqrt((position[0] - food[0])**2 + (position[1] - food[1])**2) < closestDist:
+            closestDist = math.sqrt((position[0] - food[0])**2 + (position[1] - food[1])**2)
+    currentPos = foodLeft[0]
 
-    for food in foodGrid.asList():
-        dist += math.sqrt((position[0]-food[0])**2 + (position[1]-food[1])**2)
+    totalDistance=0
+    goingTo=0
+    
+    "*** YOUR CODE HERE ***"
+    while len(foodLeft) > 0:
+        minDistance = math.inf
+        for food in foodLeft:
+            dist = math.sqrt((currentPos[0] - food[0])**2 + (currentPos[1] - food[1])**2)
+            if dist < minDistance:
+                minDistance = dist
+                goingTo = food
 
-
-
-    return h
+        totalDistance+=minDistance
+        foodLeft.remove(goingTo)
+        currentPos = goingTo
+    
+    return totalDistance + closestDist
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
